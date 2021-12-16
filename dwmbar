@@ -1,0 +1,23 @@
+#!/bin/bash
+
+delim="|"
+bat=""
+battery(){
+	num=$(( $(cat /sys/class/power_supply/BAT1/charge_now) * 100  / $(cat /sys/class/power_supply/BAT1/charge_full_design) ))
+	plug=$(cat /sys/class/power_supply/BAT1/status)
+	if [ "$plug" != "Discharging" ]
+	then	
+		bat="🔌 ${num}% $delim"
+	else
+		bat="🔋 ${num}% $delim"
+	fi
+}
+status(){
+	echo " 🔆 $(cat /sys/class/backlight/intel_backlight/actual_brightness) $delim 🔊 $(amixer get Master | awk '/Front Left: Playback/ { print $5 }' | sed 's/\[//g;s/\]//g') $delim 🔋 $(( $(cat /sys/class/power_supply/BAT1/charge_now) * 100  / $(cat /sys/class/power_supply/BAT1/charge_full_design) ))% $delim  $(uptime | sed 's/.*load average: \([0-9]*\.[0-9][0-9]\),.*/\1/') $delim  $(free | awk '/Mem/ { printf "%.2f", $3*100/$2 }')% $delim  $(date '+%a %b %d |  %I:%M %p')"
+}
+
+while true; do
+	xsetroot -name  "$(status)"
+
+	sleep 1m
+done

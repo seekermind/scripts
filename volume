@@ -1,0 +1,13 @@
+#!/bin/bash
+
+vol=$(amixer sget Master | tail -n1 | awk -F'[][]' 'END{print $2}')
+
+echo "墳 ${vol}"
+
+case $BUTTON in
+	1) notify-send "$(pactl info | awk -F'.' '/Default Sink/{print $1}')" "Sink Inputs:\n$(pacmd list-sink-inputs | awk -F '"' '/application.process.binary/{print $2}')" ;;
+	3) $TERMINAL -e alsamixer ;;
+	4) pactl set-sink-volume @DEFAULT_SINK@ +5% && pkill -SIGRTMIN+9 dwmblocks ;;
+	5) pactl set-sink-volume @DEFAULT_SINK@ -5% && pkill -SIGRTMIN+9 dwmblocks ;;
+	6) $TERMINAL -e $EDITOR $HOME/.shellscript/volume ;;
+esac

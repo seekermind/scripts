@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo " $(free | awk '(NR == 2) { print int($3*100/$2) }')%"
+
+case $BUTTON in
+	1) notify-send "Top 10 memory-hog:" "$(ps axc -o cmd:15,%mem --sort %mem | tail)" ;;
+	3) $TERMINAL -e top ;;
+	6) $TERMINAL -e $EDITOR $HOME/.shellscript/memory ;;
+esac

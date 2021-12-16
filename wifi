@@ -1,0 +1,23 @@
+#!/bin/bash
+
+state=$(nmcli -c no networking connectivity)
+[[ "$state" == "none" ]] && exit 1
+
+ssid=$(nmcli -c no -g name connection show --active)
+ifname=$(nmcli -c no -g device connection show --active) #interface name
+icon=""
+case $state in
+	"full") icon="" ;;
+	"portal"|"limited") icon="睊" ;;
+esac
+
+rx=$(( $(cat /sys/class/net/${ifname}/statistics/rx_bytes) / 1048576 ))
+tx=$(( $(cat /sys/class/net/${ifname}/statistics/tx_bytes) / 1048576 ))
+
+case $BUTTON in
+	1) notify-send "$ssid ($state)" ":${rx} MB :${tx} MB" ;;
+	3) $TERMINAL -e nmtui ;;
+	6) $TERMINAL -e $EDITOR $HOME/.shellscript/wifi ;;
+esac
+
+echo "${icon} ${ssid}"

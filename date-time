@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo " $(date '+%a,%b %d   %I:%M %p')"
+
+case $BUTTON in
+	1) notify-send "$(cal) " "$(python3 $HOME/.shellscript/bangla-date)" ;;
+	6) $TERMINAL -e $EDITOR $HOME/.shellscript/date-time ;;
+esac
+

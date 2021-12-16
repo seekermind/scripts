@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "$(sensors | awk '/Core 0/ {print $3 }')"
+
+case $BUTTON in
+	1) notify-send "$(sensors)" ;;
+	6) $TERMINAL -e $EDITOR $HOME/.shellscript/temperature ;;
+esac

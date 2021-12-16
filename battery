@@ -1,0 +1,22 @@
+#!/bin/bash
+
+num=$(cat /sys/class/power_supply/BAT1/capacity)
+chargenow=$(cat /sys/class/power_supply/BAT1/charge_now)
+chargefull=$(cat /sys/class/power_supply/BAT1/charge_full)
+chargefulldesign=$(cat /sys/class/power_supply/BAT1/charge_full_design)
+
+level=$(cat /sys/class/power_supply/BAT1/status)
+if [ "$level" = "Full" ]
+then	
+	echo " ${num}%"
+elif [ $level = "Charging" ]
+then
+	echo " ${num}%"
+else
+	echo " ${num}%"
+fi
+
+case $BUTTON in
+	1) notify-send "Batter Health: $(( $chargefull * 100 / $chargefulldesign ))%" "Charge Now: $(( $chargenow * 100 / $chargefulldesign ))%" ;;
+	6) $TERMINAL -e $EDITOR $HOME/.shellscript/battery ;;
+esac

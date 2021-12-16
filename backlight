@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo " $(xbacklight | awk '{print int($1)}')%"
+
+case $BUTTON in
+	1) notify-send "$(xbacklight)" ;;
+	4) xbacklight -inc 5 && pkill -SIGRTMIN+10 dwmblocks ;;
+	5) xbacklight -dec 5 && pkill -SIGRTMIN+10 dwmblocks ;;
+	6) $TERMINAL -e $EDITOR $HOME/.shellscript/backlight ;;
+esac

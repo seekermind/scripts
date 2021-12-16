@@ -1,0 +1,13 @@
+#!/bin/python3.8
+
+import bangla
+from hijri_converter import convert
+
+def getDate():
+    hijri = convert.Gregorian.today().to_hijri()
+    bengli = bangla.get_date()
+    print("\n")
+    print(bengli['date'] + "'এ " + bengli['month']+ ", " + bengli['year'])
+    print(str(hijri.day) + " " + hijri.month_name()+", "+str(hijri.year))
+
+getDate()
